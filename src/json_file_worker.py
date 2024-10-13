@@ -31,8 +31,7 @@ class JSONFileWorker(FileWorker):
         Метод проверяет наличие вакансии в списке
         """
         for vac in vac_list:
-            if vac.vacancy_dict.get("id") == target_vac.vacancy_dict.get("id"):
-                # print(f'Вакансия {vac.get('id')} уже существует')
+            if vac.id == target_vac.id:
                 return True
         return False
 

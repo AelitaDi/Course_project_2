@@ -17,7 +17,7 @@ def filter_vacancies(vacancies_list: list[Vacancy], filter_words: list[str]) -> 
     target_list = []
     for vacancy in vacancies_list:
         for word in filter_words:
-            if word.lower() in vacancy.vacancy_dict["description"].lower():
+            if word.lower() in vacancy.description.lower():
                 target_list.append(vacancy)
                 continue
     return target_list
@@ -32,7 +32,7 @@ def get_vacancies_by_salary(vacancies_list: list[Vacancy], salary_range: str) ->
     range_min = s_range[0]
     range_max = s_range[-1]
     for vac in vacancies_list:
-        if (vac.vacancy_dict["salary"] >= range_min) and (vac.vacancy_dict["salary"] <= range_max):
+        if (vac.salary >= range_min) and (vac.salary <= range_max):
             target_list.append(vac)
     return target_list
 
@@ -41,7 +41,7 @@ def sort_vacancies(vac_list: list[Vacancy]) -> list[Vacancy]:
     """
     Функция сортировки списка вакансий по зарплате.
     """
-    target_list = sorted(vac_list, key=lambda x: x.vacancy_dict["salary"], reverse=True)
+    target_list = sorted(vac_list, key=lambda x: x.salary, reverse=True)
     return target_list
 
 
