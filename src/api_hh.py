@@ -1,6 +1,6 @@
-from src.parser import Parser
-
 import requests
+
+from src.parser import Parser
 
 
 class HeadHunterAPI(Parser):
@@ -12,10 +12,9 @@ class HeadHunterAPI(Parser):
         """
         Создание экземпляра класса, атрибутов для подключения к API HH.
         """
-        self.__url = 'https://api.hh.ru/vacancies'
-        self.__headers = {'User-Agent': 'HH-User-Agent'}
-        self.__params = {'text': '', 'page': 0, 'per_page': 100}
-        self.__vacancies = []
+        self.__url = "https://api.hh.ru/vacancies"
+        self.__headers = {"User-Agent": "HH-User-Agent"}
+        self.__params = {"text": "", "page": 0, "per_page": 100}
         # super().__init__(file_worker)
 
     @property
@@ -30,16 +29,12 @@ class HeadHunterAPI(Parser):
     def params(self):
         return self.__params
 
-    @property
-    def vacancies(self):
-        return self.__vacancies
-
     def _Parser__get_response(self) -> bool:
         """
         Метод получения ответа от HH, проверка статуса ответа.
         """
-        self.__params['page'] = 0
-        response = requests.get('https://api.hh.ru/', headers=self.__headers, params=self.__params)
+        self.__params["page"] = 0
+        response = requests.get("https://api.hh.ru/", headers=self.__headers, params=self.__params)
         self.__status_code = response.status_code
         if self.__status_code == 200:
             print("Ответ от HH.ru успешно получен.")
@@ -54,12 +49,12 @@ class HeadHunterAPI(Parser):
         """
         vacancies = []
         if self._Parser__get_response():
-            self.__params['text'] = keyword
-            self.__params['per_page'] = per_page
+            self.__params["text"] = keyword
+            self.__params["per_page"] = per_page
             while requests.get(self.__url, headers=self.__headers, params=self.__params):
                 response = requests.get(self.__url, headers=self.__headers, params=self.__params)
-                vacancies.extend(response.json()['items'])
-                self.__params['page'] += 1
+                vacancies.extend(response.json()["items"])
+                self.__params["page"] += 1
         return vacancies
 
     @staticmethod
@@ -81,9 +76,9 @@ class HeadHunterAPI(Parser):
         Метод преобразовывает вакансии в формат, с которым удобно работать.
         """
         salary = 0
-        if type(vacancy.get('salary')) == dict:
-            from_ = vacancy['salary'].get('from', 0)
-            to = vacancy['salary'].get('to', 0)
+        if type(vacancy.get("salary")) == dict:
+            from_ = vacancy["salary"].get("from", 0)
+            to = vacancy["salary"].get("to", 0)
             if (from_ is not None and from_ != 0) and (to is not None and to != 0):
                 salary = (from_ + to) // 2
             elif from_ is not None and from_ != 0:
@@ -91,21 +86,22 @@ class HeadHunterAPI(Parser):
             elif to is not None and to != 0:
                 salary = to
 
-            if salary != 0 and vacancy['salary']['currency'] != 'RUR':
-                salary = salary * cls.get_price(vacancy['salary']['currency'])
+            if salary != 0 and vacancy["salary"]["currency"] != "RUR":
+                salary = salary * cls.get_price(vacancy["salary"]["currency"])
 
-        transformed_vacancy = {'id': vacancy['id'],
-                               'name': vacancy['name'],
-                               'salary': salary,
-                               'url': vacancy.get('alternate_url', ''),
-                               'description': f'Обязанности: {vacancy['snippet'].get('responsibility', '')} '
-                                              f'Требования: {vacancy['snippet'].get('requirement', '')}'
-                               }
+        transformed_vacancy = {
+            "id": vacancy["id"],
+            "name": vacancy["name"],
+            "salary": salary,
+            "url": vacancy.get("alternate_url", ""),
+            "description": f"Обязанности: {vacancy['snippet'].get('responsibility', '')} "
+            f"Требования: {vacancy['snippet'].get('requirement', '')}",
+        }
         return transformed_vacancy
 
 
-# if __name__ == "__main__":
-#     # print(HeadHunterAPI().get_vacancies("python")[:10])
+if __name__ == "__main__":
+    HeadHunterAPI().get_vacancies()
 #     # print(HeadHunterAPI.get_price("BYR"))
 #     print(HeadHunterAPI.transfom_data({
 #         'id': '108374935',

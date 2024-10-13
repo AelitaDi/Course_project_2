@@ -10,8 +10,9 @@ class JSONFileWorker(FileWorker):
     Класс для работы с JSON-файлами.
     """
 
-    def __init__(self,
-                 filename: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "vacancies.json")):
+    def __init__(
+        self, filename: str = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "vacancies.json")
+    ):
         """
         Конструктор класса.
         """
@@ -21,21 +22,8 @@ class JSONFileWorker(FileWorker):
                 data = json.load(file)
                 self.exist = True
         except Exception:
-            print('Файл не существует')
+            print("Файл не существует")
             self.exist = False
-
-    # def exist_file(self) -> bool:
-    #     """
-    #     Метод проверяет существование файла.
-    #     """
-    #     flag = False
-    #     try:
-    #         self.file_reader()
-    #         flag = True
-    #     except Exception:
-    #         print(f'Файл не существует')
-    #     finally:
-    #         return flag
 
     @staticmethod
     def exist_vacancy(target_vac: Vacancy, vac_list: list[Vacancy]):
@@ -43,7 +31,7 @@ class JSONFileWorker(FileWorker):
         Метод проверяет наличие вакансии в списке
         """
         for vac in vac_list:
-            if vac.vacancy_dict.get('id') == target_vac.vacancy_dict.get('id'):
+            if vac.vacancy_dict.get("id") == target_vac.vacancy_dict.get("id"):
                 # print(f'Вакансия {vac.get('id')} уже существует')
                 return True
         return False
@@ -66,7 +54,7 @@ class JSONFileWorker(FileWorker):
         """
         vacancy_dict = vacancy.vacancy_dict
         if not self.exist:
-            print(f'Создаю новый файл {self.__filename}')
+            print(f"Создаю новый файл {self.__filename}")
             with open(self.__filename, "w") as file:
                 self.exist = True
                 add_data = [vacancy_dict]
@@ -86,11 +74,11 @@ class JSONFileWorker(FileWorker):
         with open(self.__filename, "w") as file:
             json.dump([], file)
             self.exist = True
-            print(f'Файл {self.__filename} очищен.')
+            print(f"Файл {self.__filename} очищен.")
 
 
-if __name__ == '__main__':
-    vac_1 = Vacancy.new_vacancy({"id": 124, "name": 'test', "description": "test", "url": "test", "salary": 1})
-    print(JSONFileWorker().file_reader)
+# if __name__ == "__main__":
+#     vac_1 = Vacancy.new_vacancy({"id": 124, "name": "test", "description": "test", "url": "test", "salary": 1})
+#     print(JSONFileWorker().file_reader)
     # JSONFileWorker().file_writer(vac_1)
     # JSONFileWorker().file_deleter()

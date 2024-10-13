@@ -5,7 +5,8 @@ class Vacancy(BaseVacancy):
     """
     Класс вакансий.
     """
-    __slots__ = ('id', 'name', 'url', 'description', 'salary')
+
+    __slots__ = ("id", "name", "url", "description", "salary")
 
     def __init__(self, vac_id: str, name: str, url: str, description: str, salary: int):
         self.id = vac_id
@@ -15,8 +16,10 @@ class Vacancy(BaseVacancy):
         self.salary = salary
 
     def __str__(self):
-        return (f'Вакансия: \n {self.name}\n ЗП: {self.salary}\n Требования и обязанности: {self.description}'
-                f'\n Ссылка:\n {self.url}')
+        return (
+            f"Вакансия: \n {self.name}\n ЗП: {self.salary}\n Требования и обязанности: {self.description}"
+            f"\n Ссылка:\n {self.url}"
+        )
 
     @classmethod
     def new_vacancy(cls, new_vacancy_dict: dict):
@@ -71,5 +74,10 @@ class Vacancy(BaseVacancy):
         """
         Метод возвращает словарь с атрибутами вакансии.
         """
-        return {'id': self.id, 'name': self.name, 'description': self.description, 'url': self.url,
-                'salary': self.salary}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "url": self.url,
+            "salary": self.salary,
+        }

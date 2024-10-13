@@ -1,9 +1,11 @@
 from abc import ABC, abstractmethod
 
+
 class BaseVacancy(ABC):
     """
     Абстрактный класс для вакансий.
     """
+
     @classmethod
     @abstractmethod
     def new_vacancy(cls, *args, **kwargs):
